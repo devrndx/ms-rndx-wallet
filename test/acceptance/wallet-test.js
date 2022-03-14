@@ -56,4 +56,25 @@ describe('wallet endpoint', () => {
             .end(done);
     });
 
+    // Note: depends on the walletModel stub.
+    it('POST /wallet/create_account returns proper data', (done) => {
+        request(app)
+            .post('/wallet/create_account')
+            .expect(200)
+            .expect(function(response) {
+
+            })
+            .end(done);
+    });
+
+    // Note: depends on the walletModel stub.
+    it('GET /wallet/balanceof returns proper data', (done) => {
+        request(app)
+            .get('/wallet/balanceof')
+            .expect(200)
+            .expect(function(response) {
+
+            })
+            .end(done);
+    });
 });
