@@ -24,7 +24,7 @@ function serviceRoutes(app) {
 
     /* eslint-disable global-require */
     /* eslint-disable global-require */
-    const safesitelist = process.env.NODE_ENV == 'production' ? ["https://rndx-wallet.io", "https://app.rndx-wallet.io", "https://admin.rndx-wallet.io"] : ["*", "http://localhost:6002", "http://localhost:33123"];
+    const safesitelist = ["https://rndx-wallet.io", "https://app.rndx-wallet.io", "https://admin.rndx-wallet.io", "*", "http://localhost:6002", "http://localhost:5501", "http://127.0.0.1:5501"];
 
     const corsOptions = {
         origin: function(origin, callback) {
