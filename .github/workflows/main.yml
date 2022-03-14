@@ -29,4 +29,4 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: devrndx/ms-rndx-wallet:v0.0.1
+        tags: devrndx/ms-rndx-wallet:v0.0.2
