@@ -44,14 +44,14 @@ paths:
                 example:
                   balance: 10000
 
-  /users/register:
+  /wallet/register:
     get:
       summary: register SRT client
       description: |
         Register SRT Client - Private sale
         Example request:
         ```
-          GET http://api.example.com/v1/users/register?name="홍길동"&phone_number="01012341234"&email="foo@foo.com"
+          GET http://api.example.com/v1/wallet/register?name="홍길동"&phone_number="01012341234"&email="foo@foo.com"
         ```
       parameters:
         - name: name
@@ -87,14 +87,14 @@ paths:
                   result:
                     type: boolean
 
-  /users/deligate:
+  /wallet/deligate:
     get:
       summary: Approve deligate coin transfer
       description: |
         Transmits authority to replace coin transfer.       
         Example request:
         ```
-          GET http://api.example.com/v1/users/deligate?wallet_address="0x2394adfaf2"
+          GET http://api.example.com/v1/wallet/deligate?wallet_address="0x2394adfaf2"
         ```
       parameters:
         - name: wallet_address
@@ -133,7 +133,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  users:
+                  wallet:
                     type: array
                     items:
                       type: object

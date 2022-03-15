@@ -30,7 +30,7 @@ jobs:
       uses: docker/metadata-action@v3
       with:
         images: |
-          devsrcorp/ms-srt-users
+          devsrcorp/ms-srt-wallet
         tags: |
           type=ref,event=branch
           type=ref,event=pr
