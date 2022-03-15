@@ -1,31 +1,31 @@
 default: start
 
-project:=ms_rndx_wallet_proj
-service:=ms_rndx_wallet
+project:=srt-user-managed-project
+service:=ms-srt-users
 NODE_ENV?=dev
 COMMIT_HASH = $(shell git rev-parse --verify HEAD)
 
 .PHONY: start
-start: 
+start:
 	docker-compose -p ${project} up -d
 
 .PHONY: stop
-stop: 
+stop:
 	docker-compose -p ${project} down
 
 .PHONY: restart
 restart: stop start
 
 .PHONY: logs
-logs: 
+logs:
 	docker-compose -p ${project} logs -f ${service}
 
 .PHONY: logs-db
-logs-db: 
+logs-db:
 	docker-compose -p ${project} logs -f ${service}-db
 
 .PHONY: ps
-ps: 
+ps:
 	docker-compose -p ${project} ps
 
 .PHONY: build
@@ -51,15 +51,24 @@ install-dev-package-in-container: start
 
 .PHONY: migration-create
 migration-create: start
-	docker-compose -p ${project} exec ${service} node_modules/db-migrate/bin/db-migrate create ${name} --sql-file
+	docker-compose -p ${project} exec ${service} ./node_modules/db-migrate/bin/db-migrate create ${name} --sql-file
+	sudo chown -R $$USER ./migrations/sqls/
+
+.PHONY: migrate-local
+migrate-local:
+	node_modules/db-migrate/bin/db-migrate up -e ${NODE_ENV}
 
 .PHONY: migrate
 migrate: start
-	docker-compose -p ${project} exec ${service} node_modules/db-migrate/bin/db-migrate up -e ${NODE_ENV}
+	docker-compose -p ${project} exec ${service} make migrate-local
 
 .PHONY: shell
 shell:
 	docker-compose -p ${project} exec ${service} sh
+
+.PHONY: mysql
+mysql:
+	docker-compose -p ${project} exec ${service}-db mysql -u root -pverysecretsomething
 
 .PHONY: test
 test: start test-exec
@@ -86,5 +95,5 @@ build-release:
 
 .PHONY: run-release
 run-release:
-	docker run -d --name ${service}_${COMMIT_HASH} -p :5502 local/${service}:${COMMIT_HASH}
+	docker run -d --name ${service}_${COMMIT_HASH} -p :5501 local/${service}:${COMMIT_HASH}
 	docker logs -f ${service}_${COMMIT_HASH}

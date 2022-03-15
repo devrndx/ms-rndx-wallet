@@ -4,3 +4,11 @@ db:
   database: MYSQL_DATABASE
   host: MYSQL_HOST
   connectionLimit: MYSQL_CONNECTION_LIMIT
+firebase:
+  apiKey: FIREBASE_API_KEY
+  authDomain: FIREBASE_AUTH_DOMAIN
+  projectId: FIREBASE_PROJECT_ID
+  storageBucket: FIREBASE_STORAGEBUCKET
+  messagingSenderId: FIREBASE_MSG_SENDER_ID
+  appId: FIREBASE_APP_ID
+  adminConfigFilePath: FIREBASE_ADMIN_FILE_PATH

@@ -1,8 +1,12 @@
 version: "3.4"
 
 services:
-  ms_rndx_wallet:
-    container_name: ms_rndx_wallet
+  ms-srt-users:
+    container_name: ms-srt-users
+    labels:
+      #- "traefik.backend=ms-srt-users"
+      - "traefik.enable=true"
+      - "traefik.http.routers.ms-srt-users.rule=PathPrefix(`/users`)"
     user: root # avoids ton of volume mounting headaches in dev mode.
     build:
       context: .
@@ -12,38 +16,37 @@ services:
       # @see: http://jdlm.info/articles/2016/03/06/lessons-building-node-app-docker.html#the-node_modules-volume-trick
       - /opt/app/node_modules
     ports:
-      - 34343:5502
+      - 33123:5501
     env_file:
+      - ./firebase.env
       - ./database.env
     links:
-      - ms_rndx_wallet-db
+      - ms-srt-users-db
     environment:
       - NODE_ENV=dev
       - NODE_HOT_RELOAD=1
       - NODE_LOGGER_GRANULARLEVELS=1
       - NODE_CONFIG_DISABLE_FILE_WATCH="Y"
-      #- PORT=5502 # this is overriden in shell/start-dev.sh since wait-for.sh compromises it from here
-    # command: nodemon -e js,coffee,jade,handlebars server.js
+      #- PORT=5501 # this is overriden in shell/start-dev.sh since wait-for.sh compromises it from here
     # @see: https://docs.docker.com/compose/startup-order/
-    # command: ["./shell/wait-for.sh", "ms_rndx_wallet-db:3306", "--", "./shell/start-dev.sh"]
-    command: ./shell/wait-for.sh ms_rndx_wallet-db:3306 -- ./shell/start-dev.sh
+    command: ./shell/wait-for.sh ms-srt-users-db:33125 -- ./shell/start-dev.sh
 
-  ms_rndx_wallet-db:
-    container_name: ms_rndx_wallet-db
+  ms-srt-users-db:
+    container_name: ms-srt-users-db
     image: mysql:5.7
     # port mapping not needed for the app, but convenient in debugging
     # to use some GUI tool (e.g. SequelPro) against the DB, on the host
     ## ports:
     ##   - 5306:3306
     ports:
-      - 3306
+      - 33125:3306
     expose:
-      - 3306
+      - 33125
     env_file:
       - ./database.env
     volumes:
-      - ms_rndx-wallet-db_data:/var/lib/mysql
+      - ms_srt_users_db_vol:/var/lib/mysql
     restart: always
 
 volumes:
-  ms_rndx-wallet-db_data:
+  ms_srt_users_db_vol:

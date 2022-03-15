@@ -36,7 +36,7 @@
         "multipleStatements": true,
         "user": "root",
         "password": { "ENV": "MYSQL_ROOT_PASSWORD" },
-        "database": "ms_rndx_wallet_qa",
+        "database": "srt_client_qa",
         "host": { "ENV": "MYSQL_HOST" }
     }
 }

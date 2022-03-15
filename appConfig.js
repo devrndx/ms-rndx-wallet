@@ -4,26 +4,28 @@ const helmet = require('helmet');
 const log = require('metalogger')();
 const healthcheck = require('maikai');
 const hbs = require('hbs');
-const cors = require("cors");
+const cors = require('cors');
 
 require('app-module-path').addPath(path.join(__dirname, '/lib'));
 
 // Add all routes and route-handlers for your service/app here:
 function serviceRoutes(app) {
+
     // For Liveness Probe, defaults may be all you need.
-    const livenessCheck = healthcheck({ path: "/ping" });
+    const livenessCheck = healthcheck({ "path": "/ping" });
     app.use(livenessCheck.express());
 
-    // Add advanced healthcheck middleware (incl. database check)
+    // For readiness check, let's also test the DB
     const check = healthcheck();
     const AdvancedHealthcheckers = require('healthchecks-advanced');
     const advCheckers = new AdvancedHealthcheckers();
     // Database health check is cached for 10000ms = 10 seconds!
-    check.addCheck('db', 'usersQuery', advCheckers.dbUsersCheck, { minCacheMs: 10000 });
+    check.addCheck('db', 'dbQuery', advCheckers.dbCheck, { minCacheMs: 10000 });
     app.use(check.express());
 
     /* eslint-disable global-require */
-    /* eslint-disable global-require */
+
+    // Temporary allow all urls
     const safesitelist = ["https://rndx-wallet.io", "https://app.rndx-wallet.io", "https://admin.rndx-wallet.io", "*", "http://localhost:6002", "http://localhost:5501", "http://127.0.0.1:5501"];
 
     const corsOptions = {
@@ -31,7 +33,7 @@ function serviceRoutes(app) {
             const issafesitelisted = safesitelist.indexOf(origin) !== -1;
             callback(null, issafesitelisted);
         },
-        credentials: true,
+        credentials: true
     };
 
     app.use(cors(corsOptions));
