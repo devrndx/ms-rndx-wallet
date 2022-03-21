@@ -7,6 +7,7 @@ const hbs = require('hbs');
 const cors = require('cors');
 
 require('app-module-path').addPath(path.join(__dirname, '/lib'));
+const webSocket = require("./lib/wallet/controllers/socket");
 
 // Add all routes and route-handlers for your service/app here:
 function serviceRoutes(app) {
@@ -39,6 +40,7 @@ function serviceRoutes(app) {
     app.use(cors(corsOptions));
     app.use("/wallet", require("wallet")); // attach to sub-route
 
+    webSocket(app.http, app);
     /* eslint-enable global-require */
 }
 

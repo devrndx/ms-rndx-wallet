@@ -1,12 +1,12 @@
 version: "3.4"
 
 services:
-  ms-srt-wallet:
-    container_name: ms-srt-wallet
+  ms-rndx-wallet:
+    container_name: ms-rndx-wallet
     labels:
-      #- "traefik.backend=ms-srt-wallet"
+      #- "traefik.backend=ms-rndx-wallet"
       - "traefik.enable=true"
-      - "traefik.http.routers.ms-srt-wallet.rule=PathPrefix(`/wallet`)"
+      - "traefik.http.routers.ms-rndx-wallet.rule=PathPrefix(`/wallet`)"
     user: root # avoids ton of volume mounting headaches in dev mode.
     build:
       context: .
@@ -16,12 +16,12 @@ services:
       # @see: http://jdlm.info/articles/2016/03/06/lessons-building-node-app-docker.html#the-node_modules-volume-trick
       - /opt/app/node_modules
     ports:
-      - 33123:5501
+      - 34123:5501
     env_file:
       - ./firebase.env
       - ./database.env
     links:
-      - ms-srt-wallet-db
+      - ms-rndx-wallet-db
     environment:
       - NODE_ENV=dev
       - NODE_HOT_RELOAD=1
@@ -29,24 +29,24 @@ services:
       - NODE_CONFIG_DISABLE_FILE_WATCH="Y"
       #- PORT=5501 # this is overriden in shell/start-dev.sh since wait-for.sh compromises it from here
     # @see: https://docs.docker.com/compose/startup-order/
-    command: ./shell/wait-for.sh ms-srt-wallet-db:33125 -- ./shell/start-dev.sh
+    command: ./shell/wait-for.sh ms-rndx-wallet-db:34125 -- ./shell/start-dev.sh
 
-  ms-srt-wallet-db:
-    container_name: ms-srt-wallet-db
+  ms-rndx-wallet-db:
+    container_name: ms-rndx-wallet-db
     image: mysql:5.7
     # port mapping not needed for the app, but convenient in debugging
     # to use some GUI tool (e.g. SequelPro) against the DB, on the host
     ## ports:
     ##   - 5306:3306
     ports:
-      - 33125:3306
+      - 34125:3306
     expose:
-      - 33125
+      - 34125
     env_file:
       - ./database.env
     volumes:
-      - ms_srt_wallet_db_vol:/var/lib/mysql
+      - ms_rndx_wallet_db_vol:/var/lib/mysql
     restart: always
 
 volumes:
-  ms_srt_wallet_db_vol:
+  ms_rndx_wallet_db_vol:

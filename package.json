@@ -36,6 +36,7 @@
     "mysql": "^2.18.1",
     "nodebootstrap-server": "^1.12.0",
     "promise-mysql": "^5.0.3",
+    "socket.io": "^4.4.1",
     "spieler": "^1.2.1",
     "uuid": "^8.3.2"
   },
@@ -48,7 +49,7 @@
     "eslint": "^7.22.0",
     "eslint-plugin-mocha": "^8.1.0",
     "fakepromise": "^1.0.6",
-        "istanbul": "^0.4.2",
+    "istanbul": "^0.4.2",
     "mocha": "^8.3.2",
     "nock": "^13.0.11",
     "nodemon": "^2.0.2",
