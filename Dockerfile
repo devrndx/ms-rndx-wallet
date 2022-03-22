@@ -23,7 +23,9 @@ RUN chmod 755 ./shell/run-db-migration.sh
 USER node
 ENV HOME_DIR=/opt/app \
     NODE_ENV=production \
-    PORT=5502
+    PORT=5502 \
+    SOCKET_PORT=5702
+
 
 ENTRYPOINT ./shell/run-db-migration.sh && node server.js
 
@@ -37,5 +39,6 @@ RUN chmod 755 ./shell/run-db-migration.sh
 
 USER node
 ENV PORT=5502
+ENV SOCKET_PORT=5702 
 
 ENTRYPOINT ./shell/run-db-migration.sh && node server.js

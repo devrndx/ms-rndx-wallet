@@ -1,6 +1,6 @@
 default: start
 
-project:=rndx-user-managed-project
+project:=rndx-wallet-managed-project
 service:=ms-rndx-wallet
 NODE_ENV?=dev
 COMMIT_HASH = $(shell git rev-parse --verify HEAD)
