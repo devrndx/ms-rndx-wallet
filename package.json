@@ -23,6 +23,8 @@
     "crypto-js": "^4.1.1",
     "db-migrate": "^0.11.12",
     "db-migrate-mysql": "^2.1.2",
+    "delay": "^5.0.0",
+    "dotenv": "^16.0.0",
     "duration": "^0.2.2",
     "express": "^4.17.1",
     "express-validator": "^6.10.0",
@@ -64,7 +66,7 @@
     "start": "nodemon -L -e js,coffee,jade,handlebars server.js",
     "lint": "eslint lib test",
     "pretest": "npm run lint",
-    "test": "nyc mocha --bail test/ test/**/*-test.js",
+    "test": "nyc mocha --bail test/ test/**/*-test.js --timeout 10000",
     "test-cov": "nyc mocha test/ test/**/*-test.js"
   },
   "mocha": {
