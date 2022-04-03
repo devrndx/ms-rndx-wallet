@@ -129,3 +129,4 @@ Temporary Items
 package-lock.json
 .vscode
 firebase.env
+.env
