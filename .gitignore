@@ -130,3 +130,4 @@ package-lock.json
 .vscode
 firebase.env
 .env
+test/support/env.js
