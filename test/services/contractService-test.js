@@ -8,8 +8,9 @@ const ContractService = require("wallet/services/contractServices");
 
 describe("contract service test", () => {
     const testService = new ContractService();
-    const testPk =
-        "0xf93f24d688b3df3a6192194fb82b2010fce5d31e2a5dff16b86c0e549cce41db";
+    const testPk = process.env.OWNER_PRIV_KEY;
+    const testFromPk = process.env.TEST_PRIV_KEY;
+    const testFeeDelegate = process.env.FEE_DELEGATE_PRIV_KEY;
     const testOwner = "0x119a593af04a29ed65aa334c1deb8ed5ad188e2d";
     const testAddrs = [
         "0x5b7171534bd972951cf39ba93e49f88595e508ff",
@@ -35,7 +36,7 @@ describe("contract service test", () => {
     it("Contract Service Get Account", () => {
         return testService.getAccount(testPk)
             .then((acnt) => {
-                assert.equal(acnt.address, "0x119a593af04a29ed65aa334c1deb8ed5ad188e2d");
+                assert.equal(acnt.address, testOwner, `acnt Address is ${testPk}`);
             });
     });
 
@@ -51,13 +52,37 @@ describe("contract service test", () => {
             });
     });
 
-    it("Contract Service - Lock wallet test", () => {
-        return testService.getAccount(testPk)
-            .then((ownerAcnt) => {
-                return testService.lockWallet(ownerAcnt, testAddrs[1]);
+    it("Contract Service - Approve Token Test", () => {
+        return testService.getAccount(testFromPk)
+            .then(async(ownerAcnt) => {
+                const amount = await testService.totalSupply();
+                return testService.approve(ownerAcnt, testAddrs[0], amount);
+            }).then((receipt) => {
+                log.info(receipt.transactionHash);
             })
+            .catch((error) => {
+                assert.fail(`Failed Test :: ${error.message} ${error.stack}`);
+            });
+    });
+
+
+    it("Contract Service - Transfer From Token Test", () => {
+        return testService.getAccount(testFeeDelegate)
+            .then((ownerAcnt) => {
+                const amount = 500;
+                return testService.transferFrom(ownerAcnt, testAddrs[1], ownerAcnt.address, amount);
+            }).then((receipt) => {
+                log.info(receipt.transactionHash);
+            })
+            .catch((error) => {
+                assert.fail(`Failed Test :: ${error.message} ${error.stack}`);
+            });
+    });
+
+    it("Contract Service - UnLock wallet test", () => {
+        return testService.unlockWallet(testAddrs[1])
             .then((receipt) => {
-                log.info("In Transfer Callback");
+                log.info("In Lock Callback");
                 log.info(`receipt is ${receipt}`);
                 if (receipt === undefined) {
                     return;
